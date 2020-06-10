@@ -1,0 +1,7 @@
+{
+  "name": "vue-chess-game",
+  "version": "1.0.0",
+  "author": "Arkady Polhovsky <arkims@inbox.ru>",
+  "license": "MIT",
+  "private": true
+}
