@@ -1,11 +1,14 @@
 <template>
-  <canvas width="480" height="480"></canvas>
+  <canvas :width="width" :height="height"></canvas>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { mapGetters } from "vuex";
 
-export default Vue.extend({});
+export default Vue.extend({
+  computed: mapGetters(["width", "height"])
+});
 </script>
 
 <style scoped>
