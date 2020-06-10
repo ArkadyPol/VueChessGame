@@ -8,6 +8,7 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
+    "direct-vuex": "^0.11.1",
     "vue": "^2.6.11",
     "vuex": "^3.4.0"
   },

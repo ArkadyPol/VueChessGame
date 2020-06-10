@@ -1,19 +1,34 @@
 <template>
-  <canvas :width="width" :height="height"></canvas>
+  <canvas :width="width" :height="height" ref="canvas"></canvas>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { mapGetters } from "vuex";
 
 export default Vue.extend({
-  computed: mapGetters(["width", "height"])
+  computed: {
+    width() {
+      return this.$store.direct.state.width;
+    },
+    height() {
+      return this.$store.direct.state.height;
+    }
+  },
+  mounted() {
+    const canvas = this.$refs.canvas as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      this.$store.direct.commit.setContext(ctx);
+    }
+  },
+  methods: {}
 });
 </script>
 
 <style scoped>
 canvas {
   border: 1px solid red;
-  margin: 5px;
+  margin-left: 25px;
+  margin-top: 10px;
 }
 </style>

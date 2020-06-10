@@ -5,6 +5,10 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 module.exports = {
   context: path.resolve(__dirname, "src"),
   entry: "./main.ts",
+  devServer: {
+    hot: true,
+    open: true,
+  },
   module: {
     rules: [
       {
