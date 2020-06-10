@@ -1,8 +1,4 @@
 node_modules/
 dist/
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-.pnp.*
 .vscode/
 .VSCodeCounter/

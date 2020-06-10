@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
@@ -47,9 +46,5 @@ module.exports = {
   ],
   resolve: {
     extensions: [".js", ".ts"],
-    plugins: [PnpWebpackPlugin],
-  },
-  resolveLoader: {
-    plugins: [PnpWebpackPlugin.moduleLoader(module)],
   },
 };
