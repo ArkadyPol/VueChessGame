@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "es6",
+    "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"
