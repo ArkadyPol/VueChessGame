@@ -47,6 +47,10 @@ class Game extends VuexModule implements IGameState {
   ctx = null as IGameState["ctx"];
   chess = null as IGameState["chess"];
 
+  get hor() {
+    return hor;
+  }
+
   @Mutation
   setContext(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;

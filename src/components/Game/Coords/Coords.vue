@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Coord v-for="n in 8" :key="n" />
+    <Coord v-for="value in values" :key="value" :value="value" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import Coord from "./Coord/Coord.vue";
 
 @Component({
@@ -13,7 +13,9 @@ import Coord from "./Coord/Coord.vue";
     Coord
   }
 })
-export default class Coords extends Vue {}
+export default class Coords extends Vue {
+  @Prop(Array) values!: number[] | string[];
+}
 </script>
 
 <style scoped>

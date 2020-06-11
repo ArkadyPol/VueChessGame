@@ -1,7 +1,7 @@
 <template>
   <div class="game-wrapper">
-    <Coords class="vert-coords" />
-    <Coords class="hor-coords" />
+    <Coords class="vert-coords" :values="numArr" />
+    <Coords class="hor-coords" :values="hor" />
     <div class="canvas-wrapper">
       <canvas :width="width" :height="height" ref="canvas"></canvas>
     </div>
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Ref } from "vue-property-decorator";
 import Coords from "./Coords/Coords.vue";
 import game from "@/store/modules/game";
 
@@ -23,10 +23,22 @@ export default class Game extends Vue {
   get height() {
     return game.height;
   }
+  get hor() {
+    return game.hor.map(x => x.toUpperCase());
+  }
+
+  get numArr() {
+    let numArr = [] as Number[];
+    for (let i = 1; i < 9; i++) {
+      numArr.push(i);
+    }
+    return numArr.reverse();
+  }
+
+  @Ref("canvas") canvas!: HTMLCanvasElement;
 
   mounted() {
-    const canvas = this.$refs.canvas as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
+    const ctx = this.canvas.getContext("2d");
     if (ctx) {
       game.initializeGame(ctx);
     }
