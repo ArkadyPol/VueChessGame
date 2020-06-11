@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Game from "./components/Game.vue";
+import Game from "./components/Game/Game.vue";
 import Component from "vue-class-component";
 
 @Component({
