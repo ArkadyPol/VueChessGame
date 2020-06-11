@@ -6,26 +6,23 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { State, Mutation } from "vuex-class";
-import GameModule from "../store/modules/game";
+import game from "../store/modules/game";
 
 @Component
 export default class Game extends Vue {
-  @State(state => state.game.width) width!: GameModule["width"];
-  @State(state => state.game.height) height!: GameModule["height"];
-  @Mutation setContext!: GameModule["setContext"];
-  @Mutation drawBoard!: GameModule["drawBoard"];
-
-  created() {
-    this.width;
-    this.height;
+  get width() {
+    return game.width;
   }
-  
+  get height() {
+    return game.height;
+  }
+
   mounted() {
     const canvas = this.$refs.canvas as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
     if (ctx) {
-      this.setContext(ctx);
-      this.drawBoard();
+      game.setContext(ctx);
+      game.drawBoard();
     }
   }
 }

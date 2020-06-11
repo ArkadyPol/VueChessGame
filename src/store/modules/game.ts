@@ -1,14 +1,22 @@
-import { Module, VuexModule, Mutation } from "vuex-module-decorators";
+import {
+  Module,
+  VuexModule,
+  Mutation,
+  getModule,
+} from "vuex-module-decorators";
+import store from "../index";
 
-interface IGame {
+export interface IGameState {
   width: number;
+  height: number;
+  ctx: null | CanvasRenderingContext2D;
 }
 
-@Module
-export default class Game extends VuexModule implements IGame {
+@Module({ dynamic: true, store, name: "game" })
+class Game extends VuexModule implements IGameState {
   width = 480;
   height = 480;
-  ctx = null as null | CanvasRenderingContext2D;
+  ctx = null as IGameState["ctx"];
 
   @Mutation
   setContext(ctx: CanvasRenderingContext2D) {
@@ -20,3 +28,5 @@ export default class Game extends VuexModule implements IGame {
     this.ctx?.fillRect(100, 100, 60, 60);
   }
 }
+
+export default getModule(Game);
