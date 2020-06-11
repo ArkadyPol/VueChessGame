@@ -6,9 +6,8 @@
 
 
 <script lang="ts">
-import Vue from "vue";
+import { Component, Vue } from "vue-property-decorator";
 import Game from "./components/Game/Game.vue";
-import Component from "vue-class-component";
 
 @Component({
   components: {

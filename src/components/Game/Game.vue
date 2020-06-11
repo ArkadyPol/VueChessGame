@@ -9,8 +9,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, Vue } from "vue-property-decorator";
 import Coords from "./Coords/Coords.vue";
 import game from "@/store/modules/game";
 
