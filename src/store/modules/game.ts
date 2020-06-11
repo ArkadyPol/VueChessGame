@@ -3,6 +3,7 @@ import {
   VuexModule,
   Mutation,
   getModule,
+  Action,
 } from "vuex-module-decorators";
 import store from "../index";
 
@@ -25,7 +26,25 @@ class Game extends VuexModule implements IGameState {
 
   @Mutation
   drawBoard() {
-    this.ctx?.fillRect(100, 100, 60, 60);
+    if (this.ctx) {
+      let isWhite = true;
+      for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+          if (!isWhite) {
+            this.ctx.fillStyle = "brown";
+            this.ctx.fillRect(j * 60, i * 60, 60, 60);
+          }
+          isWhite = !isWhite;
+        }
+        isWhite = !isWhite;
+      }
+    }
+  }
+
+  @Action
+  initializeGame(ctx: CanvasRenderingContext2D) {
+    this.setContext(ctx);
+    this.drawBoard();
   }
 }
 

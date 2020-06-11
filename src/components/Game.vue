@@ -5,7 +5,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { State, Mutation } from "vuex-class";
 import game from "../store/modules/game";
 
 @Component
@@ -21,8 +20,7 @@ export default class Game extends Vue {
     const canvas = this.$refs.canvas as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
     if (ctx) {
-      game.setContext(ctx);
-      game.drawBoard();
+      game.initializeGame(ctx);
     }
   }
 }
@@ -30,7 +28,7 @@ export default class Game extends Vue {
 
 <style scoped>
 canvas {
-  border: 1px solid red;
+  border: 3px solid black;
   margin-left: 25px;
   margin-top: 10px;
 }
