@@ -3,7 +3,7 @@
     <Coords class="vert-coords" :values="numArr" />
     <Coords class="hor-coords" :values="hor" />
     <div class="canvas-wrapper">
-      <canvas :width="width" :height="height" ref="canvas"></canvas>
+      <canvas :width="width" :height="height" ref="canvas" @mousedown="onCanvasMouseDown"></canvas>
     </div>
   </div>
 </template>
@@ -42,6 +42,10 @@ export default class Game extends Vue {
     if (ctx) {
       game.initializeGame(ctx);
     }
+  }
+
+  onCanvasMouseDown(e: MouseEvent) {
+    game.onCanvasMouseDown([e.offsetX, e.offsetY]);
   }
 }
 </script>

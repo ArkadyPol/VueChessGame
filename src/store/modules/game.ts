@@ -41,6 +41,7 @@ export interface IGameState {
   height: number;
   ctx: null | CanvasRenderingContext2D;
   chess: null | Chess;
+  currentPiece: 0 | ChessPiece;
 }
 
 @Module({ dynamic: true, store, name: "game" })
@@ -49,6 +50,7 @@ class Game extends VuexModule implements IGameState {
   height = 480;
   ctx = null as IGameState["ctx"];
   chess = null as IGameState["chess"];
+  currentPiece = 0 as IGameState["currentPiece"];
 
   get hor() {
     return hor;
@@ -96,10 +98,10 @@ class Game extends VuexModule implements IGameState {
   }
 
   @Mutation
-  drawPiece([i, j]: [number, number]) {
-    if (this.chess && this.chess[hor[i]][j as Vertical]) {
+  drawPiece([i, j]: [number, Vertical]) {
+    if (this.chess?.[hor[i]][j]) {
       this.ctx?.fillText(
-        String.fromCharCode(this.chess[hor[i]][j as Vertical]),
+        String.fromCharCode(this.chess[hor[i]][j]),
         i * 60 + 5,
         60 * (9 - j) - 8
       );
@@ -109,12 +111,13 @@ class Game extends VuexModule implements IGameState {
   @Action
   drawChess() {
     if (this.ctx) {
+      this.ctx.clearRect(0, 0, this.width, this.height);
       drawBoard(this.ctx);
       this.ctx.font = "50px Arial";
       this.ctx.fillStyle = "black";
       for (let i = 0; i < 8; i++) {
         for (let j = 1; j < 9; j++) {
-          this.drawPiece([i, j]);
+          this.drawPiece([i, j as Vertical]);
         }
       }
     }
@@ -125,6 +128,32 @@ class Game extends VuexModule implements IGameState {
     this.setContext(ctx);
     this.arrangeChessPieces();
     this.drawChess();
+  }
+
+  @Mutation
+  deletePiece([chessX, chessY]: [Horizontal, Vertical]) {
+    if (this.chess) {
+      console.log(this.chess[chessX][chessY]);
+      this.chess[chessX][chessY] = 0;
+    }
+  }
+
+  @Mutation
+  setCurrentPiece(piece: 0 | ChessPiece) {
+    this.currentPiece = piece;
+  }
+
+  @Action
+  onCanvasMouseDown([x, y]: [number, number]) {
+    let chessX = hor[Math.floor(x / 60)];
+    let chessY = (8 - Math.floor(y / 60)) as Vertical;
+    if (this.chess) {
+      this.setCurrentPiece(this.chess[chessX][chessY]);
+      if (this.currentPiece) {
+        this.deletePiece([chessX, chessY]);
+        this.drawChess();
+      }
+    }
   }
 }
 
