@@ -6,6 +6,7 @@ import {
   Action,
 } from "vuex-module-decorators";
 import store from "../index";
+import { drawBoard } from "@/canvas";
 
 type Vertical = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type Horizontal = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
@@ -27,10 +28,12 @@ enum ChessPiece {
   BlackPawn,
 }
 
+type ChessColumn = {
+  [key in Vertical]: ChessPiece | 0;
+};
+
 type Chess = {
-  [key in Horizontal]: {
-    [key in Vertical]: ChessPiece | 0;
-  };
+  [key in Horizontal]: ChessColumn;
 };
 
 export interface IGameState {
@@ -57,30 +60,11 @@ class Game extends VuexModule implements IGameState {
   }
 
   @Mutation
-  drawBoard() {
-    if (this.ctx) {
-      let isWhite = true;
-      for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 8; j++) {
-          if (!isWhite) {
-            this.ctx.fillStyle = "brown";
-            this.ctx.fillRect(j * 60, i * 60, 60, 60);
-          }
-          isWhite = !isWhite;
-        }
-        isWhite = !isWhite;
-      }
-    }
-  }
-
-  @Mutation
   arrangeChessPieces() {
     if (this.ctx) {
       let chess = {} as Chess;
       for (let i of hor) {
-        chess[i] = {} as {
-          [key in Vertical]: ChessPiece | 0;
-        };
+        chess[i] = {} as ChessColumn;
         for (let j = 3; j < 7; j++) {
           chess[i][j as Vertical] = 0;
         }
@@ -111,21 +95,26 @@ class Game extends VuexModule implements IGameState {
     }
   }
 
+  @Mutation
+  drawPiece([i, j]: [number, number]) {
+    if (this.chess && this.chess[hor[i]][j as Vertical]) {
+      this.ctx?.fillText(
+        String.fromCharCode(this.chess[hor[i]][j as Vertical]),
+        i * 60 + 5,
+        60 * (9 - j) - 8
+      );
+    }
+  }
+
   @Action
   drawChess() {
     if (this.ctx) {
-      this.drawBoard();
+      drawBoard(this.ctx);
       this.ctx.font = "50px Arial";
       this.ctx.fillStyle = "black";
       for (let i = 0; i < 8; i++) {
         for (let j = 1; j < 9; j++) {
-          if (this.chess && this.chess[hor[i]][j as Vertical]) {
-            this.ctx.fillText(
-              String.fromCharCode(this.chess[hor[i]][j as Vertical]),
-              i * 60 + 5,
-              60 * (9 - j) - 8
-            );
-          }
+          this.drawPiece([i, j]);
         }
       }
     }
