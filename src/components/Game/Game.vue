@@ -3,7 +3,15 @@
     <Coords class="vert-coords" :values="numArr" />
     <Coords class="hor-coords" :values="hor" />
     <div class="canvas-wrapper">
-      <canvas :width="width" :height="height" ref="canvas" @mousedown="onCanvasMouseDown"></canvas>
+      <canvas
+        :width="width"
+        :height="height"
+        ref="canvas"
+        @mousedown="onCanvasMouseDown"
+        @mousemove="onCanvasMouseMove"
+        @mouseup="onCanvasMouseUp"
+        @mouseleave="onCanvasMouseLeave"
+      ></canvas>
     </div>
   </div>
 </template>
@@ -46,6 +54,18 @@ export default class Game extends Vue {
 
   onCanvasMouseDown(e: MouseEvent) {
     game.onCanvasMouseDown([e.offsetX, e.offsetY]);
+  }
+
+  onCanvasMouseMove(e: MouseEvent) {
+    game.onCanvasMouseMove([e.offsetX, e.offsetY]);
+  }
+
+  onCanvasMouseUp(e: MouseEvent) {
+    game.onCanvasMouseUp([e.offsetX, e.offsetY]);
+  }
+
+  onCanvasMouseLeave() {
+    game.onCanvasMouseLeave();
   }
 }
 </script>

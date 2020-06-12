@@ -133,8 +133,14 @@ class Game extends VuexModule implements IGameState {
   @Mutation
   deletePiece([chessX, chessY]: [Horizontal, Vertical]) {
     if (this.chess) {
-      console.log(this.chess[chessX][chessY]);
       this.chess[chessX][chessY] = 0;
+    }
+  }
+
+  @Mutation
+  putPiece([chessX, chessY]: [Horizontal, Vertical]) {
+    if (this.chess) {
+      this.chess[chessX][chessY] = this.currentPiece;
     }
   }
 
@@ -151,9 +157,33 @@ class Game extends VuexModule implements IGameState {
       this.setCurrentPiece(this.chess[chessX][chessY]);
       if (this.currentPiece) {
         this.deletePiece([chessX, chessY]);
-        this.drawChess();
       }
     }
+  }
+
+  @Action
+  onCanvasMouseMove([x, y]: [number, number]) {
+    if (this.currentPiece && this.ctx) {
+      this.drawChess();
+      this.ctx.font = "50px Arial";
+      this.ctx.fillStyle = "black";
+      this.ctx.fillText(String.fromCharCode(this.currentPiece), x - 25, y + 15);
+    }
+  }
+
+  @Action
+  onCanvasMouseUp([x, y]: [number, number]) {
+    let chessX = hor[Math.floor(x / 60)];
+    let chessY = (8 - Math.floor(y / 60)) as Vertical;
+    this.putPiece([chessX, chessY]);
+    this.setCurrentPiece(0);
+    this.drawChess();
+  }
+
+  @Action
+  onCanvasMouseLeave() {
+    this.setCurrentPiece(0);
+    this.drawChess();
   }
 }
 
