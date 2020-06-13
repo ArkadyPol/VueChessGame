@@ -1,7 +1,7 @@
 import { drawBoard } from "@/canvas";
 import arrangeChessPieces, {
   ChessBoard,
-  ChessPiece,
+  ChessCode,
   hor,
   Horizontal,
   Vertical,
@@ -20,7 +20,7 @@ export interface IGameState {
   height: number;
   ctx: null | CanvasRenderingContext2D;
   chessBoard: ChessBoard;
-  currentPiece: 0 | ChessPiece;
+  currentPiece: 0 | ChessCode;
   isWhiteTurn: boolean;
 }
 
@@ -79,7 +79,7 @@ class Game extends VuexModule implements IGameState {
   }
 
   @Mutation
-  private setCurrentPiece(piece: 0 | ChessPiece) {
+  private setCurrentPiece(piece: 0 | ChessCode) {
     this.currentPiece = piece;
   }
 
