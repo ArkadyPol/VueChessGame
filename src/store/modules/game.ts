@@ -1,11 +1,5 @@
 import { drawBoard } from "@/canvas";
-import arrangeChessPieces, {
-  ChessBoard,
-  ChessCode,
-  hor,
-  Horizontal,
-  Vertical,
-} from "@/chess";
+import chess, { ChessBoard, hor, ChessColumn } from "@/chess";
 import {
   Action,
   getModule,
@@ -14,12 +8,17 @@ import {
   VuexModule,
 } from "vuex-module-decorators";
 import store from "../index";
+import ChessPiece, {
+  ChessCode,
+  Vertical,
+  Horizontal,
+} from "@/chess/chess-piece";
 
 export interface IGameState {
   width: number;
   height: number;
   ctx: null | CanvasRenderingContext2D;
-  chessBoard: ChessBoard;
+  chess: ChessPiece[];
   currentPiece: 0 | ChessCode;
   isWhiteTurn: boolean;
 }
@@ -29,7 +28,7 @@ class Game extends VuexModule implements IGameState {
   width = 480;
   height = 480;
   ctx = null as IGameState["ctx"];
-  chessBoard = arrangeChessPieces();
+  chess = chess;
   currentPiece = 0 as IGameState["currentPiece"];
   isWhiteTurn = true;
 
@@ -37,12 +36,26 @@ class Game extends VuexModule implements IGameState {
     return hor;
   }
 
+  get chessBoard(): ChessBoard {
+    let chessBoard = {} as ChessBoard;
+    for (let x of hor) {
+      chessBoard[x] = {} as ChessColumn;
+      for (let i = 1; i < 9; i++) {
+        chessBoard[x][i as Vertical] = 0;
+      }
+    }
+    for (let chessPiece of chess) {
+      chessBoard[chessPiece.x][chessPiece.y] = chessPiece.code;
+    }
+    return chessBoard;
+  }
+
   @Mutation
   private setContext(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
   }
 
-  @Mutation
+  @Action
   private drawPiece([i, j]: [number, Vertical]) {
     if (this.chessBoard[hor[i]][j]) {
       this.ctx?.fillText(
@@ -70,12 +83,12 @@ class Game extends VuexModule implements IGameState {
 
   @Mutation
   private deletePiece([chessX, chessY]: [Horizontal, Vertical]) {
-    this.chessBoard[chessX][chessY] = 0;
+    //this.chessBoard[chessX][chessY] = 0;
   }
 
   @Mutation
   private putPiece([chessX, chessY]: [Horizontal, Vertical]) {
-    this.chessBoard[chessX][chessY] = this.currentPiece;
+    //this.chessBoard[chessX][chessY] = this.currentPiece;
   }
 
   @Mutation
