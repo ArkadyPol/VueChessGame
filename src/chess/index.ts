@@ -22,41 +22,41 @@ export type ChessColumn = {
   [key in Vertical]: ChessPiece | 0;
 };
 
-export type Chess = {
+export type ChessBoard = {
   [key in Horizontal]: ChessColumn;
 };
 
-const arrangeChessPieces = (): Chess => {
-  let chess = {} as Chess;
+const arrangeChessPieces = (): ChessBoard => {
+  let chessBoard = {} as ChessBoard;
   for (let i of hor) {
-    chess[i] = {} as ChessColumn;
+    chessBoard[i] = {} as ChessColumn;
     for (let j = 3; j < 7; j++) {
-      chess[i][j as Vertical] = 0;
+      chessBoard[i][j as Vertical] = 0;
     }
   }
-  chess["a"][8] = ChessPiece.BlackRook;
-  chess["b"][8] = ChessPiece.BlackKnight;
-  chess["c"][8] = ChessPiece.BlackBishop;
-  chess["d"][8] = ChessPiece.BlackQueen;
-  chess["e"][8] = ChessPiece.BlackKing;
-  chess["f"][8] = ChessPiece.BlackBishop;
-  chess["g"][8] = ChessPiece.BlackKnight;
-  chess["h"][8] = ChessPiece.BlackRook;
+  chessBoard["a"][8] = ChessPiece.BlackRook;
+  chessBoard["b"][8] = ChessPiece.BlackKnight;
+  chessBoard["c"][8] = ChessPiece.BlackBishop;
+  chessBoard["d"][8] = ChessPiece.BlackQueen;
+  chessBoard["e"][8] = ChessPiece.BlackKing;
+  chessBoard["f"][8] = ChessPiece.BlackBishop;
+  chessBoard["g"][8] = ChessPiece.BlackKnight;
+  chessBoard["h"][8] = ChessPiece.BlackRook;
   for (let i = 0; i < 8; i++) {
-    chess[hor[i]][7] = ChessPiece.BlackPawn;
+    chessBoard[hor[i]][7] = ChessPiece.BlackPawn;
   }
   for (let i = 0; i < 8; i++) {
-    chess[hor[i]][2] = ChessPiece.WhitePawn;
+    chessBoard[hor[i]][2] = ChessPiece.WhitePawn;
   }
-  chess["a"][1] = ChessPiece.WhiteRook;
-  chess["b"][1] = ChessPiece.WhiteKnight;
-  chess["c"][1] = ChessPiece.WhiteBishop;
-  chess["d"][1] = ChessPiece.WhiteQueen;
-  chess["e"][1] = ChessPiece.WhiteKing;
-  chess["f"][1] = ChessPiece.WhiteBishop;
-  chess["g"][1] = ChessPiece.WhiteKnight;
-  chess["h"][1] = ChessPiece.WhiteRook;
-  return chess;
+  chessBoard["a"][1] = ChessPiece.WhiteRook;
+  chessBoard["b"][1] = ChessPiece.WhiteKnight;
+  chessBoard["c"][1] = ChessPiece.WhiteBishop;
+  chessBoard["d"][1] = ChessPiece.WhiteQueen;
+  chessBoard["e"][1] = ChessPiece.WhiteKing;
+  chessBoard["f"][1] = ChessPiece.WhiteBishop;
+  chessBoard["g"][1] = ChessPiece.WhiteKnight;
+  chessBoard["h"][1] = ChessPiece.WhiteRook;
+  return chessBoard;
 };
 
 export default arrangeChessPieces;

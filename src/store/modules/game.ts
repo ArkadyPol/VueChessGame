@@ -1,6 +1,6 @@
 import { drawBoard } from "@/canvas";
 import arrangeChessPieces, {
-  Chess,
+  ChessBoard,
   ChessPiece,
   hor,
   Horizontal,
@@ -19,7 +19,7 @@ export interface IGameState {
   width: number;
   height: number;
   ctx: null | CanvasRenderingContext2D;
-  chess: Chess;
+  chessBoard: ChessBoard;
   currentPiece: 0 | ChessPiece;
   isWhiteTurn: boolean;
 }
@@ -29,7 +29,7 @@ class Game extends VuexModule implements IGameState {
   width = 480;
   height = 480;
   ctx = null as IGameState["ctx"];
-  chess = arrangeChessPieces();
+  chessBoard = arrangeChessPieces();
   currentPiece = 0 as IGameState["currentPiece"];
   isWhiteTurn = true;
 
@@ -44,9 +44,9 @@ class Game extends VuexModule implements IGameState {
 
   @Mutation
   private drawPiece([i, j]: [number, Vertical]) {
-    if (this.chess[hor[i]][j]) {
+    if (this.chessBoard[hor[i]][j]) {
       this.ctx?.fillText(
-        String.fromCharCode(this.chess[hor[i]][j]),
+        String.fromCharCode(this.chessBoard[hor[i]][j]),
         i * 60 + 5,
         60 * (9 - j) - 8
       );
@@ -70,12 +70,12 @@ class Game extends VuexModule implements IGameState {
 
   @Mutation
   private deletePiece([chessX, chessY]: [Horizontal, Vertical]) {
-    this.chess[chessX][chessY] = 0;
+    this.chessBoard[chessX][chessY] = 0;
   }
 
   @Mutation
   private putPiece([chessX, chessY]: [Horizontal, Vertical]) {
-    this.chess[chessX][chessY] = this.currentPiece;
+    this.chessBoard[chessX][chessY] = this.currentPiece;
   }
 
   @Mutation
@@ -93,8 +93,8 @@ class Game extends VuexModule implements IGameState {
   onCanvasMouseDown([x, y]: [number, number]) {
     let chessX = hor[Math.floor(x / 60)];
     let chessY = (8 - Math.floor(y / 60)) as Vertical;
-    if (this.chess) {
-      this.setCurrentPiece(this.chess[chessX][chessY]);
+    if (this.chessBoard) {
+      this.setCurrentPiece(this.chessBoard[chessX][chessY]);
       if (this.currentPiece) {
         this.deletePiece([chessX, chessY]);
       }
