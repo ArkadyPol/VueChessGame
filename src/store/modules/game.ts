@@ -1,5 +1,5 @@
 import { drawBoard } from "@/canvas";
-import chess, { ChessBoard, hor, ChessColumn } from "@/chess";
+import { ChessBoard, hor, ChessColumn } from "@/chess";
 import {
   Action,
   getModule,
@@ -8,11 +8,7 @@ import {
   VuexModule,
 } from "vuex-module-decorators";
 import store from "../index";
-import ChessPiece, {
-  ChessCode,
-  Vertical,
-  Horizontal,
-} from "@/chess/chess-piece";
+import ChessPiece, { Vertical, Horizontal } from "@/chess/chess-piece";
 
 export interface IGameState {
   width: number;
@@ -28,7 +24,7 @@ class Game extends VuexModule implements IGameState {
   width = 480;
   height = 480;
   ctx = null as IGameState["ctx"];
-  chess = chess;
+  chess = ChessPiece.chess;
   currentPiece = null as IGameState["currentPiece"];
   isWhiteTurn = true;
 
@@ -44,7 +40,7 @@ class Game extends VuexModule implements IGameState {
         chessBoard[x][i as Vertical] = 0;
       }
     }
-    for (let chessPiece of chess) {
+    for (let chessPiece of this.chess) {
       chessBoard[chessPiece.x][chessPiece.y] = chessPiece.code;
     }
     return chessBoard;
@@ -94,19 +90,7 @@ class Game extends VuexModule implements IGameState {
     ]
   ) {
     if (this.currentPiece) {
-      const { x, y, color } = this.currentPiece;
-      let otherPiece = this.chess.find(
-        (piece) => piece.x === chessX && piece.y === chessY
-      );
-      if (color === otherPiece?.color) {
-        this.currentPiece.endMove([undefined, undefined]);
-        return;
-      } else if (otherPiece) {
-        let id = this.chess.findIndex(
-          (piece) => piece.x === chessX && piece.y === chessY
-        );
-        this.chess.splice(id, 1);
-      }
+      const { x, y } = this.currentPiece;
       this.currentPiece.endMove([chessX, chessY]);
       if (!chessX) return;
       if (x !== chessX || y !== chessY) this.isWhiteTurn = !this.isWhiteTurn;
