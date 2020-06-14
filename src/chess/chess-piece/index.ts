@@ -39,7 +39,7 @@ export default class ChessPiece {
   }
 
   get color() {
-    return this.code <= 9817 ? "white" : "black";
+    return this._code <= 9817 ? "white" : "black";
   }
 
   get code() {

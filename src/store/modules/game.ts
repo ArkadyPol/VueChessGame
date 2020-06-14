@@ -98,7 +98,7 @@ class Game extends VuexModule implements IGameState {
       let otherPiece = this.chess.find(
         (piece) => piece.x === chessX && piece.y === chessY
       );
-      if (color === otherPiece?.color){
+      if (color === otherPiece?.color) {
         this.currentPiece.endMove([undefined, undefined]);
         return;
       }
