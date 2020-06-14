@@ -1,14 +1,6 @@
-import ChessPiece, { ChessCode, Horizontal, Vertical } from "./chess-piece";
-
+import ChessPiece from "./chess-piece";
+import { ChessCode, Horizontal} from "@/types";
 export const hor = ["a", "b", "c", "d", "e", "f", "g", "h"] as Horizontal[];
-
-export type ChessColumn = {
-  [key in Vertical]: ChessCode | 0;
-};
-
-export type ChessBoard = {
-  [key in Horizontal]: ChessColumn;
-};
 
 const arrangeChessPieces = () => {
   new ChessPiece({ x: "a", y: 8 }, ChessCode.BlackRook);

@@ -1,5 +1,5 @@
 import { drawBoard } from "@/canvas";
-import { ChessBoard, hor, ChessColumn } from "@/chess";
+import { hor } from "@/chess";
 import {
   Action,
   getModule,
@@ -8,7 +8,8 @@ import {
   VuexModule,
 } from "vuex-module-decorators";
 import store from "../index";
-import ChessPiece, { Vertical, Horizontal } from "@/chess/chess-piece";
+import ChessPiece from "@/chess/chess-piece";
+import { Vertical, Horizontal, ChessBoard, ChessColumn } from "@/types";
 
 export interface IGameState {
   width: number;
