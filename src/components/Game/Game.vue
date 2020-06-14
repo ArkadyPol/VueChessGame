@@ -13,16 +13,18 @@
         @mouseleave="onCanvasMouseLeave"
       ></canvas>
     </div>
+    <Turn :color="color" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
 import Coords from "./Coords/Coords.vue";
+import Turn from "./Turn/Turn.vue";
 import game from "@/store/modules/game";
 
 @Component({
-  components: { Coords }
+  components: { Coords, Turn }
 })
 export default class Game extends Vue {
   get width() {
@@ -33,6 +35,9 @@ export default class Game extends Vue {
   }
   get hor() {
     return game.hor.map(x => x.toUpperCase());
+  }
+  get color() {
+    return game.isWhiteTurn ? "white" : "black";
   }
 
   get numArr() {
