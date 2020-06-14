@@ -19,7 +19,7 @@ export interface IGameState {
   height: number;
   ctx: null | CanvasRenderingContext2D;
   chess: ChessPiece[];
-  currentPiece: 0 | ChessCode;
+  currentPiece: null | ChessPiece;
   isWhiteTurn: boolean;
 }
 
@@ -29,7 +29,7 @@ class Game extends VuexModule implements IGameState {
   height = 480;
   ctx = null as IGameState["ctx"];
   chess = chess;
-  currentPiece = 0 as IGameState["currentPiece"];
+  currentPiece = null as IGameState["currentPiece"];
   isWhiteTurn = true;
 
   get hor() {
@@ -82,18 +82,43 @@ class Game extends VuexModule implements IGameState {
   }
 
   @Mutation
-  private deletePiece([chessX, chessY]: [Horizontal, Vertical]) {
-    //this.chessBoard[chessX][chessY] = 0;
+  private startMove() {
+    this.currentPiece?.startMove();
   }
 
   @Mutation
-  private putPiece([chessX, chessY]: [Horizontal, Vertical]) {
-    //this.chessBoard[chessX][chessY] = this.currentPiece;
+  private endMove(
+    [chessX, chessY]: [Horizontal | undefined, Vertical | undefined] = [
+      undefined,
+      undefined,
+    ]
+  ) {
+    if (this.currentPiece) {
+      const { x, y, color } = this.currentPiece;
+      let otherPiece = this.chess.find(
+        (piece) => piece.x === chessX && piece.y === chessY
+      );
+      if (color === otherPiece?.color){
+        this.currentPiece.endMove([undefined, undefined]);
+        return;
+      }
+      this.currentPiece.endMove([chessX, chessY]);
+      if (x !== chessX || y !== chessY) this.isWhiteTurn = !this.isWhiteTurn;
+    }
   }
 
   @Mutation
-  private setCurrentPiece(piece: 0 | ChessCode) {
-    this.currentPiece = piece;
+  private setCurrentPiece([chessX, chessY]: [Horizontal, Vertical]) {
+    this.currentPiece =
+      this.chess.find((piece) => piece.x === chessX && piece.y === chessY) ||
+      null;
+    if ((this.currentPiece?.color === "black") === this.isWhiteTurn)
+      this.currentPiece = null;
+  }
+
+  @Mutation
+  private unsetCurrentPiece() {
+    this.currentPiece = null;
   }
 
   @Action
@@ -106,11 +131,9 @@ class Game extends VuexModule implements IGameState {
   onCanvasMouseDown([x, y]: [number, number]) {
     let chessX = hor[Math.floor(x / 60)];
     let chessY = (8 - Math.floor(y / 60)) as Vertical;
-    if (this.chessBoard) {
-      this.setCurrentPiece(this.chessBoard[chessX][chessY]);
-      if (this.currentPiece) {
-        this.deletePiece([chessX, chessY]);
-      }
+    this.setCurrentPiece([chessX, chessY]);
+    if (this.currentPiece) {
+      this.startMove();
     }
   }
 
@@ -120,7 +143,11 @@ class Game extends VuexModule implements IGameState {
       this.drawChess();
       this.ctx.font = "50px Arial";
       this.ctx.fillStyle = "black";
-      this.ctx.fillText(String.fromCharCode(this.currentPiece), x - 25, y + 15);
+      this.ctx.fillText(
+        String.fromCharCode(this.currentPiece.codeInMove),
+        x - 25,
+        y + 15
+      );
     }
   }
 
@@ -128,14 +155,15 @@ class Game extends VuexModule implements IGameState {
   onCanvasMouseUp([x, y]: [number, number]) {
     let chessX = hor[Math.floor(x / 60)];
     let chessY = (8 - Math.floor(y / 60)) as Vertical;
-    this.putPiece([chessX, chessY]);
-    this.setCurrentPiece(0);
+    this.endMove([chessX, chessY]);
+    this.unsetCurrentPiece();
     this.drawChess();
   }
 
   @Action
   onCanvasMouseLeave() {
-    this.setCurrentPiece(0);
+    this.endMove();
+    this.unsetCurrentPiece();
     this.drawChess();
   }
 }
