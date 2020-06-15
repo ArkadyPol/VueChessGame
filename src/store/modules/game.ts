@@ -92,8 +92,8 @@ class Game extends VuexModule implements IGameState {
   ) {
     if (this.currentPiece) {
       const { x, y } = this.currentPiece;
-      this.currentPiece.endMove([chessX, chessY]);
-      if (!chessX) return;
+      let success = this.currentPiece.endMove([chessX, chessY]);
+      if (!chessX || !success) return;
       if (x !== chessX || y !== chessY) this.isWhiteTurn = !this.isWhiteTurn;
     }
   }

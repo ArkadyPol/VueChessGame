@@ -37,13 +37,17 @@ export default class ChessPiece {
     this.isMoving = true;
   }
 
-  endMove([chessX, chessY]: [Horizontal | undefined, Vertical | undefined]) {
+  endMove([chessX, chessY]: [
+    Horizontal | undefined,
+    Vertical | undefined
+  ]): boolean {
+    this.isMoving = false;
     if (chessX && chessY) {
       let otherPiece = ChessPiece.chess.find(
         (piece) => piece.x === chessX && piece.y === chessY
       );
       if (this.color === otherPiece?.color) {
-        return;
+        return false;
       } else if (otherPiece) {
         let id = ChessPiece.chess.findIndex(
           (piece) => piece.x === chessX && piece.y === chessY
@@ -52,6 +56,6 @@ export default class ChessPiece {
       }
       (this.position.x = chessX), (this.position.y = chessY);
     }
-    this.isMoving = false;
+    return true;
   }
 }
