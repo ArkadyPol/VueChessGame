@@ -43,21 +43,35 @@ export default class ChessPiece {
   ]): boolean {
     this.isMoving = false;
     if (chessX && chessY) {
-      let otherPiece = ChessPiece.chess.find(
-        (piece) => piece.x === chessX && piece.y === chessY
-      );
-      if (otherPiece) {
-        if (this.color === otherPiece.color) {
-          return false;
-        } else {
-          let id = ChessPiece.chess.findIndex(
-            (piece) => piece.x === chessX && piece.y === chessY
-          );
-          ChessPiece.chess.splice(id, 1);
-        }
-      }
+      let result = this.move(chessX, chessY);
+      if (result === false) return false;
       (this.position.x = chessX), (this.position.y = chessY);
     }
     return true;
+  }
+
+  protected move(chessX: Horizontal, chessY: Vertical) {
+    let otherPiece = ChessPiece.findPiece(chessX, chessY);
+    if (otherPiece) {
+      if (this.color === otherPiece.color) {
+        return false;
+      } else {
+        ChessPiece.deletePiece(chessX, chessY);
+      }
+    }
+  }
+
+  static findPiece(
+    chessX: Horizontal,
+    chessY: Vertical
+  ): ChessPiece | undefined {
+    return this.chess.find((piece) => piece.x === chessX && piece.y === chessY);
+  }
+
+  static deletePiece(chessX: Horizontal, chessY: Vertical) {
+    let id = this.chess.findIndex(
+      (piece) => piece.x === chessX && piece.y === chessY
+    );
+    this.chess.splice(id, 1);
   }
 }
