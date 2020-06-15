@@ -101,7 +101,7 @@ class Game extends VuexModule implements IGameState {
   @Mutation
   private setCurrentPiece([chessX, chessY]: [Horizontal, Vertical]) {
     this.currentPiece =
-      this.chess.find((piece) => piece.x === chessX && piece.y === chessY) ||
+      ChessPiece.findPiece(chessX, chessY) ||
       null;
     if ((this.currentPiece?.color === "black") === this.isWhiteTurn)
       this.currentPiece = null;
