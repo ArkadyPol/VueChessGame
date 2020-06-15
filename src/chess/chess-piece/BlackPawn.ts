@@ -37,7 +37,7 @@ export default class BlackPawn extends ChessPiece {
       moves.push({ x: hor[numX + 1], y: (this.y - 1) as Vertical });
     }
     if (
-      ChessPiece.findPiece(hor[numX - 1], (this.y - 1) as Vertical)?.color !==
+      ChessPiece.findPiece(hor[numX - 1], (this.y - 1) as Vertical)?.color ===
       "white"
     ) {
       moves.push({ x: hor[numX - 1], y: (this.y - 1) as Vertical });
