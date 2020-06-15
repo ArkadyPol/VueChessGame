@@ -20,6 +20,12 @@ export interface IGameState {
   isWhiteTurn: boolean;
 }
 
+enum Color {
+  Yellow = "rgba(255,255,0,0.85)",
+  Green = "rgba(0,255,0,0.85)",
+  Red = "rgba(255,0,0,0.85)",
+}
+
 @Module({ dynamic: true, store, name: "game" })
 class Game extends VuexModule implements IGameState {
   width = 480;
@@ -63,11 +69,32 @@ class Game extends VuexModule implements IGameState {
     }
   }
 
+  @Mutation
+  private drawAllowedMoves() {
+    if (this.ctx && this.currentPiece) {
+      this.ctx.fillStyle = Color.Green;
+      let x = hor.indexOf(this.currentPiece.x) * 60;
+      let y = (8 - this.currentPiece.y) * 60;
+      this.ctx.fillRect(x, y, 60, 60);
+      for (let pos of this.currentPiece.allowedMoves) {
+        if (ChessPiece.findPiece(pos.x, pos.y)) {
+          this.ctx.fillStyle = Color.Red;
+        } else this.ctx.fillStyle = Color.Yellow;
+        let x = hor.indexOf(pos.x) * 60;
+        let y = (8 - pos.y) * 60;
+        this.ctx.fillRect(x, y, 60, 60);
+      }
+    }
+  }
+
   @Action
   private drawChess() {
     if (this.ctx) {
       this.ctx.clearRect(0, 0, this.width, this.height);
       drawBoard(this.ctx);
+      if (this.currentPiece) {
+        this.drawAllowedMoves();
+      }
       this.ctx.font = "50px Arial";
       this.ctx.fillStyle = "black";
       for (let i = 0; i < 8; i++) {
@@ -100,9 +127,7 @@ class Game extends VuexModule implements IGameState {
 
   @Mutation
   private setCurrentPiece([chessX, chessY]: [Horizontal, Vertical]) {
-    this.currentPiece =
-      ChessPiece.findPiece(chessX, chessY) ||
-      null;
+    this.currentPiece = ChessPiece.findPiece(chessX, chessY) || null;
     if ((this.currentPiece?.color === "black") === this.isWhiteTurn)
       this.currentPiece = null;
   }

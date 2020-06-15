@@ -33,6 +33,11 @@ export default class ChessPiece {
     return this._code;
   }
 
+  get allowedMoves() {
+    let moves = [] as Position[];
+    return moves;
+  }
+
   startMove() {
     this.isMoving = true;
   }
