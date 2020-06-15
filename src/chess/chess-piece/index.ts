@@ -46,13 +46,15 @@ export default class ChessPiece {
       let otherPiece = ChessPiece.chess.find(
         (piece) => piece.x === chessX && piece.y === chessY
       );
-      if (this.color === otherPiece?.color) {
-        return false;
-      } else if (otherPiece) {
-        let id = ChessPiece.chess.findIndex(
-          (piece) => piece.x === chessX && piece.y === chessY
-        );
-        ChessPiece.chess.splice(id, 1);
+      if (otherPiece) {
+        if (this.color === otherPiece.color) {
+          return false;
+        } else {
+          let id = ChessPiece.chess.findIndex(
+            (piece) => piece.x === chessX && piece.y === chessY
+          );
+          ChessPiece.chess.splice(id, 1);
+        }
       }
       (this.position.x = chessX), (this.position.y = chessY);
     }

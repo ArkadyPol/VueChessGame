@@ -1,5 +1,6 @@
 import ChessPiece from "./chess-piece";
-import { ChessCode, Horizontal} from "@/types";
+import Pawn from "./chess-piece/Pawn";
+import { ChessCode, Horizontal } from "@/types";
 export const hor = ["a", "b", "c", "d", "e", "f", "g", "h"] as Horizontal[];
 
 const arrangeChessPieces = () => {
@@ -20,8 +21,8 @@ const arrangeChessPieces = () => {
   new ChessPiece({ x: "g", y: 1 }, ChessCode.WhiteKnight);
   new ChessPiece({ x: "h", y: 1 }, ChessCode.WhiteRook);
   for (let i = 0; i < 8; i++) {
-    new ChessPiece({ x: hor[i], y: 7 }, ChessCode.BlackPawn);
-    new ChessPiece({ x: hor[i], y: 2 }, ChessCode.WhitePawn);
+    new Pawn({ x: hor[i], y: 7 }, "black");
+    new Pawn({ x: hor[i], y: 2 }, "white");
   }
 };
 
