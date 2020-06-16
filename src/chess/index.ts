@@ -5,13 +5,14 @@ import BlackPawn from "./chess-piece/BlackPawn";
 import Knight from "./chess-piece/Knight";
 import Bishop from "./chess-piece/Bishop";
 import Rook from "./chess-piece/Rook";
+import Queen from "./chess-piece/Queen";
 export const hor = ["a", "b", "c", "d", "e", "f", "g", "h"] as Horizontal[];
 
 const arrangeChessPieces = () => {
   new Rook({ x: "a", y: 8 }, "black");
   new Knight({ x: "b", y: 8 }, "black");
   new Bishop({ x: "c", y: 8 }, "black");
-  new ChessPiece({ x: "d", y: 8 }, ChessCode.BlackQueen);
+  new Queen({ x: "d", y: 8 }, "black");
   new ChessPiece({ x: "e", y: 8 }, ChessCode.BlackKing);
   new Bishop({ x: "f", y: 8 }, "black");
   new Knight({ x: "g", y: 8 }, "black");
@@ -19,7 +20,7 @@ const arrangeChessPieces = () => {
   new Rook({ x: "a", y: 1 }, "white");
   new Knight({ x: "b", y: 1 }, "white");
   new Bishop({ x: "c", y: 1 }, "white");
-  new ChessPiece({ x: "d", y: 1 }, ChessCode.WhiteQueen);
+  new Queen({ x: "d", y: 1 }, "white");
   new ChessPiece({ x: "e", y: 1 }, ChessCode.WhiteKing);
   new Bishop({ x: "f", y: 1 }, "white");
   new Knight({ x: "g", y: 1 }, "white");
