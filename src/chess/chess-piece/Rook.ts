@@ -9,18 +9,7 @@ export default class Rook extends ChessPiece {
       color === "white" ? ChessCode.WhiteRook : ChessCode.BlackRook
     );
   }
-
-  protected move(chessX: Horizontal, chessY: Vertical) {
-    let id = this.allowedMoves.findIndex(
-      (pos) => pos.x === chessX && pos.y === chessY
-    );
-    if (id === -1) return false;
-    let otherPiece = ChessPiece.findPiece(chessX, chessY);
-    if (otherPiece) {
-      ChessPiece.deletePiece(chessX, chessY);
-    }
-  }
-
+  
   get allowedMoves() {
     let moves = [] as Position[];
     let numX = hor.indexOf(this.x);

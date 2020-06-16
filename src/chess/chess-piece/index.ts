@@ -56,13 +56,13 @@ export default class ChessPiece {
   }
 
   protected move(chessX: Horizontal, chessY: Vertical) {
+    let id = this.allowedMoves.findIndex(
+      (pos) => pos.x === chessX && pos.y === chessY
+    );
+    if (id === -1) return false;
     let otherPiece = ChessPiece.findPiece(chessX, chessY);
     if (otherPiece) {
-      if (this.color === otherPiece.color) {
-        return false;
-      } else {
-        ChessPiece.deletePiece(chessX, chessY);
-      }
+      ChessPiece.deletePiece(chessX, chessY);
     }
   }
 
